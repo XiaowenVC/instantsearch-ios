@@ -43,6 +43,9 @@ import UIKit
     
     private var isMultiIndexActive = false
     
+    /// Variable that controls whether a refinement event is sent to refinement widgets when a refinement parameter changes
+    public var isRefinementNotificationEnabled = true
+    
     /// The search parameters of the Searcher. This is just a quick access to `searcher.params`.
     /// + NOTE: It is safer to use the getSearcher().params method
     /// + WARNING: Don't use this in the case of configuring with multi-index.
@@ -412,6 +415,8 @@ import UIKit
     
     /// Refinement Notification handler sent when either a Numeric or a Facet Refinement is changed.
     @objc func onRefinementNotification(notification: Notification) {
+        guard isRefinementNotificationEnabled else { return }
+        
         let numericRefinementMap = notification.userInfo?[Searcher.userInfoNumericRefinementChangeKey] as? [String: [NumericRefinement]]
         let facetRefinementMap = notification.userInfo?[Searcher.userInfoFacetRefinementChangeKey] as? [String: [FacetRefinement]]
         
